@@ -1,9 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { setUI, useUI } from "@/lib/store";
-import { Emblem } from "./Emblem";
 
 const Experience = dynamic(() => import("@/components/scene/Experience"), { ssr: false });
 
@@ -33,41 +32,12 @@ export function Poster({ visible }: { visible: boolean }) {
   );
 }
 
-function Loader({ done }: { done: boolean }) {
-  const [hide, setHide] = useState(false);
-  useEffect(() => {
-    if (!done) return;
-    const intro = setTimeout(() => setUI({ intro: true }), 250);
-    const t = setTimeout(() => setHide(true), 1200);
-    return () => {
-      clearTimeout(t);
-      clearTimeout(intro);
-    };
-  }, [done]);
-  if (hide) return null;
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[60] flex items-center justify-center bg-ink transition-opacity duration-1000"
-      style={{ opacity: done ? 0 : 1 }}
-    >
-      <div className="flex flex-col items-center gap-6">
-        <Emblem size={44} className="text-gold" />
-        <div className="h-px w-40 overflow-hidden bg-line">
-          <div className="h-full w-full origin-left animate-[scroll-cue_1.6s_ease-in-out_infinite] bg-gold" />
-        </div>
-        <span className="eyebrow">Entering ASIA</span>
-      </div>
-    </div>
-  );
-}
-
 export function SceneLayer() {
   const webgl = useUI((s) => s.webgl);
   const ready = useUI((s) => s.sceneReady);
-  const [timedOut, setTimedOut] = useState(false);
+  // No loading curtain: the page is usable at once and the scene fades in behind it.
   useEffect(() => {
-    const t = setTimeout(() => setTimedOut(true), 4500);
+    const t = setTimeout(() => setUI({ intro: true }), 120);
     return () => clearTimeout(t);
   }, []);
   const showScene = webgl === "ok";
@@ -79,7 +49,6 @@ export function SceneLayer() {
           <Experience />
         </div>
       )}
-      <Loader done={ready || webgl === "none" || timedOut} />
     </>
   );
 }
