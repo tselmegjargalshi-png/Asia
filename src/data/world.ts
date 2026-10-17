@@ -1,0 +1,290 @@
+/**
+ * Art direction for the persistent 3D world. Each scroll chapter maps to one
+ * state; the scene blends between neighbouring states as the visitor scrolls,
+ * so the whole page reads as one continuous flight.
+ */
+export type WorldStateId =
+  | 'hero'
+  | 'discover'
+  | 'mountains'
+  | 'ocean'
+  | 'hidden'
+  | 'ancient'
+  | 'night'
+  | 'atlas'
+  | 'explore'
+  | 'journey'
+
+export interface WorldStateDef {
+  skyTop: string
+  skyHorizon: string
+  sun: string
+  /** Sun elevation in radians, and azimuth (radians, 0 = straight ahead). */
+  sunElevation: number
+  sunAzimuth: number
+  fog: string
+  fogDensity: number
+  terrainLow: string
+  terrainMid: string
+  terrainHigh: string
+  /** Overall terrain height multiplier. */
+  amplitude: number
+  /** 0 = ridged mountains, 1 = wind shaped dunes. */
+  dunes: number
+  /** Water plane height in world units. */
+  water: number
+  waterDeep: string
+  waterShallow: string
+  stars: number
+  aurora: number
+  clouds: number
+  /** Camera height above the terrain base, and pitch in radians. */
+  camHeight: number
+  camPitch: number
+  /** Exposure multiplier for the final colour. */
+  exposure: number
+  dust: string
+}
+
+export const worldStates: Record<WorldStateId, WorldStateDef> = {
+  hero: {
+    skyTop: '#03101a',
+    skyHorizon: '#2a535b',
+    sun: '#ffb27a',
+    sunElevation: 0.07,
+    sunAzimuth: 0.28,
+    fog: '#163840',
+    fogDensity: 0.0105,
+    terrainLow: '#04110f',
+    terrainMid: '#123a35',
+    terrainHigh: '#dfe6e1',
+    amplitude: 1,
+    dunes: 0,
+    water: -2.2,
+    waterDeep: '#021317',
+    waterShallow: '#0f4c52',
+    stars: 0.12,
+    aurora: 0,
+    clouds: 0.85,
+    camHeight: 13,
+    camPitch: -0.08,
+    exposure: 0.9,
+    dust: '#ffd9b0',
+  },
+  discover: {
+    skyTop: '#020c14',
+    skyHorizon: '#1e4a52',
+    sun: '#ff9f68',
+    sunElevation: 0.03,
+    sunAzimuth: -0.35,
+    fog: '#12313a',
+    fogDensity: 0.013,
+    terrainLow: '#030d0c',
+    terrainMid: '#0d2f2c',
+    terrainHigh: '#b9c6c2',
+    amplitude: 0.85,
+    dunes: 0,
+    water: -1.5,
+    waterDeep: '#020f13',
+    waterShallow: '#0c3d44',
+    stars: 0.25,
+    aurora: 0,
+    clouds: 0.55,
+    camHeight: 18,
+    camPitch: -0.16,
+    exposure: 0.92,
+    dust: '#ffd2a8',
+  },
+  mountains: {
+    skyTop: '#051826',
+    skyHorizon: '#4f7d86',
+    sun: '#ffd2a0',
+    sunElevation: 0.16,
+    sunAzimuth: 0.45,
+    fog: '#2a5660',
+    fogDensity: 0.0085,
+    terrainLow: '#06140f',
+    terrainMid: '#1a3f38',
+    terrainHigh: '#f1f4f0',
+    amplitude: 1.35,
+    dunes: 0,
+    water: -3,
+    waterDeep: '#031418',
+    waterShallow: '#164f55',
+    stars: 0,
+    aurora: 0,
+    clouds: 0.65,
+    camHeight: 11,
+    camPitch: -0.02,
+    exposure: 0.9,
+    dust: '#fff1dc',
+  },
+  ocean: {
+    skyTop: '#021428',
+    skyHorizon: '#2a7d8e',
+    sun: '#fff0d0',
+    sunElevation: 0.22,
+    sunAzimuth: 0.15,
+    fog: '#1f5f6c',
+    fogDensity: 0.0085,
+    terrainLow: '#0d2a26',
+    terrainMid: '#1c5148',
+    terrainHigh: '#d9e8df',
+    amplitude: 0.42,
+    dunes: 0,
+    water: 1.6,
+    waterDeep: '#012233',
+    waterShallow: '#139aa0',
+    stars: 0,
+    aurora: 0,
+    clouds: 0.4,
+    camHeight: 7,
+    camPitch: -0.07,
+    exposure: 0.82,
+    dust: '#e6fbff',
+  },
+  hidden: {
+    skyTop: '#031410',
+    skyHorizon: '#2f5a4e',
+    sun: '#e8d6a8',
+    sunElevation: 0.12,
+    sunAzimuth: -0.5,
+    fog: '#1f4339',
+    fogDensity: 0.02,
+    terrainLow: '#020c08',
+    terrainMid: '#0f3324',
+    terrainHigh: '#7f9a86',
+    amplitude: 1.15,
+    dunes: 0,
+    water: -0.6,
+    waterDeep: '#01100c',
+    waterShallow: '#0f3b30',
+    stars: 0,
+    aurora: 0,
+    clouds: 0.95,
+    camHeight: 9,
+    camPitch: -0.03,
+    exposure: 0.95,
+    dust: '#d8f0dc',
+  },
+  ancient: {
+    skyTop: '#120c1c',
+    skyHorizon: '#b06a42',
+    sun: '#ffb45e',
+    sunElevation: 0.09,
+    sunAzimuth: 1.05,
+    fog: '#5a3020',
+    fogDensity: 0.0072,
+    terrainLow: '#1c0a05',
+    terrainMid: '#94512a',
+    terrainHigh: '#e7b07a',
+    amplitude: 0.8,
+    dunes: 1,
+    water: -9,
+    waterDeep: '#1b0c06',
+    waterShallow: '#3a1d0e',
+    stars: 0.05,
+    aurora: 0,
+    clouds: 0.15,
+    camHeight: 11,
+    camPitch: -0.12,
+    exposure: 1.0,
+    dust: '#ffd1a0',
+  },
+  night: {
+    skyTop: '#010309',
+    skyHorizon: '#041a20',
+    sun: '#2f7f6c',
+    sunElevation: -0.12,
+    sunAzimuth: 0,
+    fog: '#020d10',
+    fogDensity: 0.011,
+    terrainLow: '#010605',
+    terrainMid: '#06191a',
+    terrainHigh: '#5b7a7a',
+    amplitude: 1.05,
+    dunes: 0,
+    water: -0.4,
+    waterDeep: '#00070a',
+    waterShallow: '#05272b',
+    stars: 1,
+    aurora: 1,
+    clouds: 0,
+    camHeight: 10,
+    camPitch: 0.1,
+    exposure: 0.95,
+    dust: '#bff8e4',
+  },
+  atlas: {
+    skyTop: '#010308',
+    skyHorizon: '#04151b',
+    sun: '#3fb6a8',
+    sunElevation: -0.2,
+    sunAzimuth: 0,
+    fog: '#020b0e',
+    fogDensity: 0.016,
+    terrainLow: '#000403',
+    terrainMid: '#031012',
+    terrainHigh: '#294444',
+    amplitude: 0.7,
+    dunes: 0,
+    water: -0.8,
+    waterDeep: '#000508',
+    waterShallow: '#03171a',
+    stars: 0.85,
+    aurora: 0.25,
+    clouds: 0,
+    camHeight: 16,
+    camPitch: 0.06,
+    exposure: 0.8,
+    dust: '#a8e8dc',
+  },
+  explore: {
+    skyTop: '#02070d',
+    skyHorizon: '#14363d',
+    sun: '#ffb27a',
+    sunElevation: -0.02,
+    sunAzimuth: 0.4,
+    fog: '#0a2026',
+    fogDensity: 0.014,
+    terrainLow: '#020807',
+    terrainMid: '#0b2522',
+    terrainHigh: '#8ca39d',
+    amplitude: 0.9,
+    dunes: 0,
+    water: -1.2,
+    waterDeep: '#010a0d',
+    waterShallow: '#08292d',
+    stars: 0.5,
+    aurora: 0,
+    clouds: 0.3,
+    camHeight: 14,
+    camPitch: -0.06,
+    exposure: 0.85,
+    dust: '#ffe0bf',
+  },
+  journey: {
+    skyTop: '#06142a',
+    skyHorizon: '#b8724c',
+    sun: '#ffc27e',
+    sunElevation: 0.02,
+    sunAzimuth: 0,
+    fog: '#3a3036',
+    fogDensity: 0.009,
+    terrainLow: '#050a10',
+    terrainMid: '#1d2c33',
+    terrainHigh: '#f6d9b6',
+    amplitude: 1.1,
+    dunes: 0,
+    water: 0.4,
+    waterDeep: '#04101c',
+    waterShallow: '#2c5560',
+    stars: 0.15,
+    aurora: 0,
+    clouds: 0.7,
+    camHeight: 12,
+    camPitch: 0.02,
+    exposure: 0.88,
+    dust: '#ffe2bd',
+  },
+}
