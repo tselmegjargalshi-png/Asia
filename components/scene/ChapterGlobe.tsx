@@ -8,6 +8,7 @@ import { S } from "@/lib/sections";
 import { damp } from "@/lib/math";
 import { CITIES, ROUTES, latLonToVec, sampleGlobe } from "@/lib/geo";
 import { applyChapter } from "./layout";
+import { Shader } from "./Shader";
 
 const R = 1.6;
 
@@ -155,14 +156,14 @@ export function ChapterGlobe({ dots }: { dots: number }) {
           <meshStandardMaterial color="#090405" roughness={0.6} metalness={0.3} />
         </mesh>
         <points geometry={data.oceanGeo}>
-          <shaderMaterial vertexShader={dotVertex} fragmentShader={dotFragment} uniforms={oceanU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+          <Shader vertexShader={dotVertex} fragmentShader={dotFragment} uniforms={oceanU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
         </points>
         <points geometry={data.landGeo}>
-          <shaderMaterial vertexShader={dotVertex} fragmentShader={dotFragment} uniforms={landU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+          <Shader vertexShader={dotVertex} fragmentShader={dotFragment} uniforms={landU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
         </points>
         {data.arcs.map((a, i) => (
           <mesh key={i} geometry={a.geo}>
-            <shaderMaterial vertexShader={arcVertex} fragmentShader={arcFragment} uniforms={arcU[i]} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+            <Shader vertexShader={arcVertex} fragmentShader={arcFragment} uniforms={arcU[i]} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
           </mesh>
         ))}
         {data.cities.map((c) => (
@@ -180,7 +181,7 @@ export function ChapterGlobe({ dots }: { dots: number }) {
       </group>
       <mesh scale={1.035}>
         <sphereGeometry args={[R, 64, 64]} />
-        <shaderMaterial vertexShader={atmoVertex} fragmentShader={atmoFragment} uniforms={atmoU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <Shader vertexShader={atmoVertex} fragmentShader={atmoFragment} uniforms={atmoU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
     </group>
   );

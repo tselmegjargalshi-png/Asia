@@ -117,7 +117,13 @@ export function AsiaCard() {
     const wFinal = frame.pres[S.final] || 0;
     const total = wHero + wCard + wFinal;
     g.visible = total > 0.002;
-    if (!g.visible) return;
+    if (!g.visible) {
+      // Hotspots live in the DOM; hide them whenever the card leaves the scene.
+      frame.anchors.forEach((el, id) => {
+        if (id.startsWith("hs-") && el.dataset.visible !== "false") el.dataset.visible = "false";
+      });
+      return;
+    }
 
     let X = 0, Y = 0, Z = 0, RX = 0, RY = 0, RZ = 0, SC = 0;
     const add = (w: number, p: number[], r: number[], s: number) => {
@@ -235,7 +241,7 @@ export function AsiaCard() {
             roughness={f.roughness}
             clearcoat={f.clearcoat}
             clearcoatRoughness={f.clearcoatRoughness}
-            envMapIntensity={1.25}
+            envMapIntensity={1.55}
           />
         </mesh>
         <mesh geometry={face} position-z={-CARD_DEPTH / 2 - 0.0006} rotation-y={Math.PI}>

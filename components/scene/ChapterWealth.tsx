@@ -7,6 +7,7 @@ import { frame } from "@/lib/store";
 import { S } from "@/lib/sections";
 import { clamp, damp, rng } from "@/lib/math";
 import { applyChapter } from "./layout";
+import { Shader } from "./Shader";
 
 const vertex = /* glsl */ `
 attribute vec3 aStruct;
@@ -145,7 +146,7 @@ export function ChapterWealth({ count }: { count: number }) {
   return (
     <group ref={group} visible={false}>
       <points geometry={geo} frustumCulled={false}>
-        <shaderMaterial vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <Shader vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </points>
       <lineSegments ref={linesObj} geometry={edgeGeo}>
         <lineBasicMaterial ref={lines} color="#d2ad72" transparent opacity={0} blending={THREE.AdditiveBlending} depthWrite={false} />

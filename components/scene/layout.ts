@@ -1,8 +1,11 @@
 import { frame } from "@/lib/store";
 
 /** Responsive placement: desktop puts objects beside the copy, portrait stacks them above it. */
-export function place(desktop: [number, number, number], portrait: [number, number, number]) {
-  return frame.portrait ? portrait : desktop;
+/** Portrait lift: centres stacked objects inside the halo, above the copy. */
+export const PORTRAIT_LIFT = 1.15;
+
+export function place(desktop: [number, number, number], portrait: [number, number, number]): [number, number, number] {
+  return frame.portrait ? [portrait[0], portrait[1] + PORTRAIT_LIFT, portrait[2]] : desktop;
 }
 
 /** Camera distance multiplier so content fits narrow viewports. */

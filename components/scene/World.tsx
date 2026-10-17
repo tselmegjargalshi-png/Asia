@@ -8,6 +8,7 @@ import { frame, getUI, type Tier } from "@/lib/store";
 import { blend, damp, rng } from "@/lib/math";
 import { TIER_CONFIG } from "@/lib/quality";
 import { distanceFactor } from "./layout";
+import { Shader } from "./Shader";
 import { dustFragment, dustVertex, haloFragment, haloVertex, liteLiquidFragment, liteLiquidVertex } from "./shaders";
 
 const LIQUID_Y = -1.4;
@@ -54,7 +55,7 @@ const CAMERA = [
 ];
 //          key intensity, rim intensity, key r g b
 const LIGHT = [
-  [2.4, 3.0, 1.0, 0.9, 0.8], [2.0, 2.4, 1.0, 0.86, 0.74], [2.0, 2.6, 1.0, 0.88, 0.78], [3.0, 2.0, 1.0, 0.96, 0.9],
+  [2.4, 3.0, 1.0, 0.9, 0.8], [2.0, 2.4, 1.0, 0.86, 0.74], [2.0, 2.6, 1.0, 0.88, 0.78], [3.8, 2.2, 1.0, 0.96, 0.9],
   [1.4, 3.4, 1.0, 0.8, 0.72], [2.0, 3.0, 1.0, 0.88, 0.76], [2.6, 1.8, 1.0, 0.86, 0.62], [2.2, 3.6, 0.95, 0.9, 0.95],
   [2.2, 2.2, 1.0, 0.9, 0.82], [1.6, 2.4, 1.0, 0.85, 0.75],
 ];
@@ -119,7 +120,7 @@ function Halo() {
   return (
     <mesh ref={mesh} position={[0, 0.65, -6]} renderOrder={-1}>
       <planeGeometry args={[1, 1]} />
-      <shaderMaterial
+      <Shader
         vertexShader={haloVertex}
         fragmentShader={haloFragment}
         uniforms={uniforms}
@@ -255,7 +256,7 @@ function LiteLiquid() {
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, LIQUID_Y, 0]}>
       <planeGeometry args={[60, 60]} />
-      <shaderMaterial vertexShader={liteLiquidVertex} fragmentShader={liteLiquidFragment} uniforms={uniforms} />
+      <Shader vertexShader={liteLiquidVertex} fragmentShader={liteLiquidFragment} uniforms={uniforms} />
     </mesh>
   );
 }
@@ -296,7 +297,7 @@ function Dust({ count }: { count: number }) {
   useEffect(() => () => geo.dispose(), [geo]);
   return (
     <points geometry={geo} frustumCulled={false}>
-      <shaderMaterial
+      <Shader
         vertexShader={dustVertex}
         fragmentShader={dustFragment}
         uniforms={uniforms}
@@ -367,7 +368,7 @@ export function World({ tier }: { tier: Tier }) {
       <color attach="background" args={["#070304"]} />
       <Rig />
       <Environment resolution={256} frames={1}>
-        <Lightformer form="rect" intensity={3} color="#fff1dc" position={[0, 5, -1]} rotation-x={Math.PI / 2} scale={[10, 2, 1]} />
+        <Lightformer form="rect" intensity={1.5} color="#fff1dc" position={[0, 5, -1]} rotation-x={Math.PI / 2} scale={[10, 0.6, 1]} />
         <Lightformer form="rect" intensity={2.2} color="#c23a45" position={[-5, 1, 0]} rotation-y={Math.PI / 2} scale={[2, 6, 1]} />
         <Lightformer form="rect" intensity={1.6} color="#d2ad72" position={[5, 1, 1]} rotation-y={-Math.PI / 2} scale={[2, 6, 1]} />
         <Lightformer form="ring" intensity={4} color="#ff5a4a" position={[0, 0.5, -8]} scale={6} />

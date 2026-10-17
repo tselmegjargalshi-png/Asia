@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { createElement, useRef } from "react";
+import { createElement, Fragment, useRef } from "react";
 import { useUI } from "@/lib/store";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -32,7 +32,9 @@ export function RevealText({
     as,
     { ref, className, "aria-label": text.replace(/\n/g, " ") },
     lines.map((line, li) => (
-      <span key={li} className="block" aria-hidden="true">
+      <Fragment key={li}>
+      {li > 0 ? " " : null}
+      <span className="block" aria-hidden="true">
         {line.split(" ").map((word, wi) => {
           const idx = i++;
           return (
@@ -50,6 +52,7 @@ export function RevealText({
           );
         })}
       </span>
+      </Fragment>
     )),
   );
 }

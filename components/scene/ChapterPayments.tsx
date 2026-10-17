@@ -7,6 +7,7 @@ import { frame } from "@/lib/store";
 import { S } from "@/lib/sections";
 import { clamp, rng } from "@/lib/math";
 import { applyChapter } from "./layout";
+import { Shader } from "./Shader";
 
 const TRAIL = 70;
 
@@ -181,16 +182,16 @@ export function ChapterPayments({ nodes }: { nodes: number }) {
         <lineBasicMaterial color="#7a1f2a" transparent opacity={0.4} blending={THREE.AdditiveBlending} depthWrite={false} />
       </lineSegments>
       <points geometry={data.nodeGeo} frustumCulled={false}>
-        <shaderMaterial vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={nodeU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <Shader vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={nodeU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </points>
       <points geometry={data.pulseGeo} frustumCulled={false}>
-        <shaderMaterial vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={pulseU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <Shader vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={pulseU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </points>
       <mesh geometry={data.tube}>
         <meshBasicMaterial ref={tubeMat} color={[1.6, 0.6, 0.4]} transparent opacity={0.2} toneMapped={false} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
       <points geometry={data.trailGeo} frustumCulled={false}>
-        <shaderMaterial vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={trailU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <Shader vertexShader={pointVertex} fragmentShader={pointFragment} uniforms={trailU} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </points>
 
       {/* PERSON */}
